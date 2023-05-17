@@ -12,7 +12,7 @@
     <div class="container">
         <div class="d-flex justify-content-between m-3" >
             <h1>Coding Dojo Wall</h1>
-            <h1>Welcome {{session['name']}}</h1>
+            <h1>Welcome {{one_user.first_name}}</h1>
             <p><a href="/logout" class="btn btn-success" >Logout</a></p>
         </div>
         <div class="post">
@@ -35,16 +35,29 @@
             </form>
             <div class="postdash">
                 <p></p>
-                <h3>All Community Posts</h3>
+                <h2>All Community Posts</h2>
+                <p></p>
                 {% for one_post in all_posts %}
                     <div class="overflow-auto">
-                        <h5>
+                        <h3>
                             <em><p>{{one_post.owner.first_name}} - {{one_post.created_at.strftime("%B %d")}}</p></em>
-                        </h5>
+                        </h3>
                         <div class="d-flex w-75">
                             <div>
                                 <p>{{one_post.content}}</p>
+                                <div>
+                                    <p><em><h4>comments:</h4></em></p>
+                                    {% for one_comment in all_comments %}
+                                    {% if one_post.id == one_comment.post_id %}
+                                    <h5>
+                                        <p>{{one_comment.author.first_name}} - {{one_comment.created_at.strftime("%B %d")}}</p>
+                                    </h5>
+                                        <p>{{one_comment.comment}}</p>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
                                 <form action="/add/comment" method="post">
+                                    <input type="hidden"  name="post_id" value="{{one_post.id}}">
                                     <em><label>Post a comment</label></em>
                                     <textarea name="comment" cols="100" rows="1"></textarea>
                                     <p></p>

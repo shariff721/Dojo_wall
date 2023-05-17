@@ -1,6 +1,6 @@
 from flask_app import app
 from flask import render_template, redirect, request, session, flash
-from flask_app.models import user, post
+from flask_app.models import user, post, comment
 from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt(app)
 
@@ -49,7 +49,8 @@ def user_dashboard():
         return redirect('/')
     logged_in_user = user.User.get_one_by_id({"id": int(session['user_id'])})
     all_posts_with_owners = post.Post.get_all_posts_with_owner()
-    return render_template("dashboard.html", one_user = logged_in_user, all_posts = all_posts_with_owners)
+    all_comments = comment.Comment.get_all_comments_with_owner()
+    return render_template("dashboard.html", one_user = logged_in_user, all_posts = all_posts_with_owners, all_comments = all_comments)
 
 
 @app.route('/logout')

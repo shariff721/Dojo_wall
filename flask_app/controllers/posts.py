@@ -11,7 +11,8 @@ def add_post():
         "content":request.form["content"],
         "user_id":session["user_id"]
     }
-    post.Post.save_post(data)
+    post_id = post.Post.save_post(data)
+    session['post_id'] = post_id
     return redirect(request.referrer)
 
 @app.route("/delete/post/<int:id>")
